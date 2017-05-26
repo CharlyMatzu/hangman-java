@@ -13,6 +13,7 @@ public class ModeloJuego implements Receiver, Sender{
 
     private final Controlador control;
     private Messenger mensajeria;
+    private String ipLocal;
     //Servidor remoto
     private int puertoServidor;
     private String ipServidor;
@@ -27,8 +28,14 @@ public class ModeloJuego implements Receiver, Sender{
     }
     
     //------SOCKET
-    public void conectar(int puertoLocal, String ipServidor, int puertoServidor) {
+    public void conectar(int puertoLocal, String ipServidor, int puertoServidor, String tipo) {
         mensajeria = new Messenger(this, this, puertoLocal);
+        
+        if( tipo.equalsIgnoreCase("local") )
+            this.ipLocal = Local.getLocalIP();
+        else
+            this.ipLocal = Local.getPublicIP();
+            
         //Guardando datos de conexion
         this.puertoServidor = puertoServidor;
         this.ipServidor = ipServidor;
@@ -42,7 +49,7 @@ public class ModeloJuego implements Receiver, Sender{
         JSONObject suscripcion = new JSONObject();
         suscripcion.put("tipo",    "jugador");
         suscripcion.put("nombre",  nombre);
-        suscripcion.put("ip",      Local.getLocalIP());
+        suscripcion.put("ip",      ipLocal);
         suscripcion.put("puerto",  ""+Local.getPuertoLocal());
         
         enviarMensaje( suscripcion );
@@ -59,10 +66,12 @@ public class ModeloJuego implements Receiver, Sender{
             case "aceptado":  aceptado(); break;
             case "rechazado": rechazado(); break;
             case "jugadores": jugadores(json); break;
-            //case "rango": break; //Cuando ya hay demasiados jugadores
 
             //-------JUEGO
             case "juego": establecerJuego(json); break;
+            
+            //-------Chat
+            case "chat": recibirMensajeChat(json); break;
             
             default: consoleLog("Tipo "+tipo+" desconocido"); break;
         }
@@ -138,6 +147,20 @@ public class ModeloJuego implements Receiver, Sender{
     }
     
     
+    public void enviarMensajeChat(String msj) {
+        JSONObject json = new JSONObject();
+        json.put("tipo", "chat");
+        json.put("nombre", nombreJugador);
+        json.put("mensaje", msj);
+        enviarMensaje(json);
+    }
+    
+    private void recibirMensajeChat( JSONObject json ){
+        String mensaje = (String) json.get("mensaje");
+        control.setMensajeChat(mensaje);
+    }
+    
+    
     //------ENVIO Y RECEPCION DE MENSAJES
     private void enviarMensaje( JSONObject json ){
         sendData(ipServidor, puertoServidor, json);
@@ -163,6 +186,8 @@ public class ModeloJuego implements Receiver, Sender{
     private static void consoleLog(String mensaje) {
         System.out.println("-JUGADOR- "+mensaje);
     }
+
+    
 
     
 

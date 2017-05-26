@@ -184,8 +184,8 @@ public class Controlador extends Thread{
         this.frmConexion.setVisible(true);
     }
 
-    public void conectar(int puertoLocal, String ipServidor, int puertoServidor) {
-        this.modelo.conectar(puertoLocal, ipServidor, puertoServidor);
+    public void conectar(int puertoLocal, String ipServidor, int puertoServidor, String tipoConexion) {
+        this.modelo.conectar(puertoLocal, ipServidor, puertoServidor, tipoConexion);
         frmConexion.dispose();
         nuevaSuscripcion();
     }
@@ -210,6 +210,14 @@ public class Controlador extends Thread{
             }
         }
             
+    }
+
+    public void enviarMensajeChat(String msj) {
+        modelo.enviarMensajeChat(msj);
+    }
+    
+    public void setMensajeChat( String mjs ){
+        frmJuego.setMensaje(mjs);
     }
 
     

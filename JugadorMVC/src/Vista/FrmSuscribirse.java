@@ -100,7 +100,9 @@ public class FrmSuscribirse extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        dispose();
+        
+        System.exit(0);
+        
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSuscribirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuscribirseActionPerformed

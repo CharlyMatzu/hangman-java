@@ -3,7 +3,6 @@ package broker;
 
 import objetos.Cliente;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.json.simple.JSONObject;
 
@@ -58,12 +57,15 @@ public class Broker extends Thread{
             //servidor
             case "servidor": suscribirServidor(json); break;
             case "aceptado": aceptarJugador(json); break;
-            case "rechazado": rechazarJugador( (String) json.get("nombre"),(String) json.get("razon") );
+            case "rechazado": rechazarJugador( (String) json.get("nombre"),(String) json.get("razon") ); break;
             
             //---Juego
             case "iniciar": iniciarJuego(json); break;
             case "jugada":  enviarJugada(json); break;
             case "tiempo":  enviarJugada(json); break; //Tiempo del cronometro
+            
+            //---chat
+            case "chat": enviarMensajeChat(json); break;
             
             //----------CASOS DEl SERVIDOR
             case "juego": enviarJuego(json); break; //Cuando empieza juego, cuando responde a jugada
@@ -273,6 +275,20 @@ public class Broker extends Thread{
 
     private synchronized void consoleLog(String mensaje) {
         System.out.println("-BROKER- "+mensaje);
+    }
+
+    /**
+     * Le envia el mensaje recibido a todos los jugadores
+     * @param json 
+     */
+    private void enviarMensajeChat(JSONObject json) {
+        //Quita el nombre del jugador
+        String jugador = (String) json.get("nombre");
+        String mensaje = (String) json.get("mensaje");
+        //Reemplaza mensaje poniedole nombre
+        json.put("mensaje", "--"+jugador+"-- "+mensaje);
+        
+        enviarAJugadores(json);
     }
 
     

@@ -3,6 +3,7 @@ package Vista;
 
 import Control.Controlador;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import transmission.Local;
 
@@ -119,10 +120,17 @@ public class FrmJuego extends javax.swing.JFrame {
         labelPuerto = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        pChat = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtChat = new javax.swing.JTextArea();
+        txtMensaje = new javax.swing.JTextField();
+        btnEnviar = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
         jLabel2.setText("jLabel2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelJuego.setBackground(new java.awt.Color(255, 255, 255));
         panelJuego.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -504,7 +512,7 @@ public class FrmJuego extends javax.swing.JFrame {
                 .addGap(31, 31, 31))
         );
 
-        panelJuego.add(pBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, -1, 280));
+        panelJuego.add(pBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, 360, 280));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -532,19 +540,43 @@ public class FrmJuego extends javax.swing.JFrame {
         });
         panelJuego.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 610, -1, -1));
 
+        pChat.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtChat.setEditable(false);
+        txtChat.setColumns(20);
+        txtChat.setRows(5);
+        jScrollPane1.setViewportView(txtChat);
+
+        pChat.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 590));
+
+        txtMensaje.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMensajeKeyTyped(evt);
+            }
+        });
+        pChat.add(txtMensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 590, 270, 40));
+
+        btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+        pChat.add(btnEnviar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 630, 270, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelJuego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(pChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelJuego, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(panelJuego, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -742,6 +774,19 @@ public class FrmJuego extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void txtMensajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMensajeKeyTyped
+        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            enviarMensaje();
+        
+    }//GEN-LAST:event_txtMensajeKeyTyped
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        
+        enviarMensaje();
+        
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnA;
@@ -749,6 +794,7 @@ public class FrmJuego extends javax.swing.JFrame {
     private javax.swing.JButton btnC;
     private javax.swing.JButton btnD;
     private javax.swing.JButton btnE;
+    private javax.swing.JButton btnEnviar;
     private javax.swing.JButton btnF;
     private javax.swing.JButton btnG;
     private javax.swing.JButton btnH;
@@ -782,6 +828,7 @@ public class FrmJuego extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAdivinar;
     private javax.swing.JLabel labelErrores;
     private javax.swing.JLabel labelIP;
@@ -791,7 +838,10 @@ public class FrmJuego extends javax.swing.JFrame {
     private javax.swing.JLabel lblJugador;
     public javax.swing.JLabel lblTiempo;
     private javax.swing.JPanel pBotones;
+    private javax.swing.JPanel pChat;
     private javax.swing.JPanel panelJuego;
+    private javax.swing.JTextArea txtChat;
+    private javax.swing.JTextField txtMensaje;
     // End of variables declaration//GEN-END:variables
 
     
@@ -808,6 +858,18 @@ public class FrmJuego extends javax.swing.JFrame {
 
     public void mostrarMensaje(String message) {
         JOptionPane.showMessageDialog(null, message, "Juego", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void enviarMensaje() {
+        String msj = txtMensaje.getText();
+        if( !msj.isEmpty() ){
+            control.enviarMensajeChat(msj);
+            txtMensaje.setText("");
+        }
+    }
+    
+    public void setMensaje(String msj){
+        txtChat.setText( txtChat.getText()+"\n"+msj );
     }
     
     
