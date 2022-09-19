@@ -1,0 +1,100 @@
+-----MENSAJES DESDE LOS JUGADORES
+{
+	//Para suscribirte
+	"tipo" : 	"nuevo",
+	"ip": 		"127.0.0.1",
+	"puerto": 	"9000", //Puerto de su servidor
+	"nombre":	"...",
+	
+
+	//Para iniciar juego
+	"tipo": 	"iniciar",
+	"nombre": 	"...", //debe estar suscrito para poder iniciar juego
+
+
+	//Para una jugada (para enviar una letra)
+	"tipo": 	"jugada",
+	"letra":	"[A-Z]",
+	"nombre": 	"...", //debe estar suscrito para poder enviar letra
+
+	//cuando se acaba el tiempo
+	"tipo": 	"tiempo",
+	"nombre": 	"...", //debe estar suscrito para poder enviar...
+
+
+}
+
+-----MENSAJES DESDE EL BROKER DE MENSAJES
+{
+	//--------------------------------------
+	//	UN JUGADOR O SERVIDOR SE SUSCRIBIRÁN AL BROKER
+	//--------------------------------------
+	"tipo" : 	"[SERVIDOR] O [JUGADOR]",
+	"ip": 		"127.0.0.1", 	//IPLocal
+	"puerto": 	"9000",			//Puerto de su servidor
+	"nombre":	"...",			//Nombre que lo identifique (Opcional para servidor)
+
+
+	//-----Broker recibe y verifica el "TIPO"
+	//Si tipo == nuevo --> verifica el nombre
+		//Si tipo == "servidor" --> Agrega como servidor y RESPONDE
+			"tipo" : "aceptado",
+		//Si tipo == "jugador" y nombre no existe --> Agrega como jugador y RESPONDE
+			"tipo" : "aceptado",
+			//Envia numero de jugadores a todos los suscritos
+			"tipo" : "jugadores",
+			"cantidad" : "...", //Numero de jugadores
+		//Si tipo == "jugador" y nombre existe --> no agrega jugador y RESPONDE
+			"tipo" : "rechazado",
+
+
+
+	//--------------------------------------
+	//	UN JUGADOR QUIERE INICIAR EL JUEGO
+	//--------------------------------------
+	"tipo" : "iniciar",
+	"nombre" : "...", //Solo aceptar "iniciar" si esta suscrito
+ 
+
+	//-----HACIA EL SERVIDOR
+	//---Para iniciar juego
+	"tipo" : "iniciar",
+	"jugadores": ["J1", "J2"],
+
+	//Lo que envian los jugadores
+
+	//-----HACIA LOS JUGADORES
+	"tipo" : "juego", //para el juego
+
+	"tipo" : "rechazado", //Cuando no se agrega por que ya existe el nombre
+
+	"tipo" : "rango", //Cuando hay pocos jugadores o demasiados (mas de 3)
+
+	//Lo que envian el cliente
+
+}
+
+-----MENSAJES DESDE LA LOGICA DEL JUEGO
+{
+
+	"tipo" 		: "rango", //Cuadno son pocos o demasiados jugadores
+
+	//para que los jugadores inicien
+	"tipo" 		: "juego",
+	"tiempo" 	: "10",
+	"jugador"	: "...", //jugador en turno
+	"palabra"	: "A_G_", //String o Array de palabra
+	"erroneas"	: "asdasd",
+	"estado"	: "1-7",
+				//0 	--> Inicio del juego
+				//1-5 	-->	Jugadas (errores)
+							//1 --> Cabeza
+							//2 --> torso
+							//3 --> Brazo izq.
+							//4 --> brazo der.
+							//5 --> pierna izq.
+				//6		--> Error + Perdio
+							//6 --> Pierna derecha
+				//7		-->	Gano
+
+}
